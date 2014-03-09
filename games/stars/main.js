@@ -2,6 +2,14 @@
 // Parameters: width of the game, height of the game, how to render the game, the HTML div that will contain the game
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game_div');
 
+var player;
+var platforms;
+var cursors;
+
+var stars;
+var score = 0;
+var scoreText;
+
 // This is an array to store the different states of our game. A state is a specific scene of a game like a menu, a game over screen, etc.
 var game_state = {};
 
@@ -15,8 +23,9 @@ game_state.main.prototype = {
         game.load.image('star', 'assets/star.png');
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     },
-
+    
     create: function() {
+                
         //  A simple background for our game
         game.add.sprite(0, 0, 'sky');
         
@@ -52,12 +61,34 @@ game_state.main.prototype = {
         player.animations.add('right', [5, 6, 7, 8], 10, true);
         
         cursors = game.input.keyboard.createCursorKeys();
+        
+        stars = game.add.group();
+ 
+        //  Here we'll create 12 of them evenly spaced apart
+        for (var i = 0; i < 12; i++)
+        {
+            //  Create a star inside of the 'stars' group
+            var star = stars.create(i * 70, 0, 'star');
+
+            //  Let gravity do its thing
+            star.body.gravity.y = 6;
+
+            //  This just gives each star a slightly random bounce value
+            star.body.bounce.y = 0.7 + Math.random() * 0.2;
+        }
+        
+        scoreText = game.add.text(16, 16, 'score: '+score, { font: '32px arial', fill: '#000' });
+        
     },
 
     update: function() {
         //  Collide the player and the stars with the platforms
         game.physics.collide(player, platforms);
         
+        game.physics.collide(stars, platforms);
+        
+        game.physics.overlap(player, stars, collectStar, null, this);
+    
         //  Reset the players velocity (movement)
         player.body.velocity.x = 0;
 
@@ -88,7 +119,18 @@ game_state.main.prototype = {
         {
             player.body.velocity.y = -350;
         }
-    } 
+    }
+}
+
+function collectStar (player, star) {
+ 
+    // Removes the star from the screen
+    star.kill();
+    
+    //  Add and update the score
+    score += 10;
+    scoreText.content = 'Score: ' + score;
+    
 }
 
 // And finally we tell Phaser to add and start our 'main' state
