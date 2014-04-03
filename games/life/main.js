@@ -1,32 +1,55 @@
 var game = new Phaser.Game(750, 750, Phaser.CANVAS, 'game_div', {create: create, update: update, render: render });
 
-var aPoint = Array({
-    'x': 3, 
-    'y': 4,
-    'doStuff': function() {
-    alert(this.a + this.b);
-  }
-});
+Point = function (i, j) {
+
+    this.x = i*10;
+    this.y = j*10;
+    this.r = game.rnd.integerInRange(0, 255);
+    this.g = game.rnd.integerInRange(0, 255);
+    this.b = game.rnd.integerInRange(0, 255);
+
+};
+
+
+var points;
+
 function create() {
 //    p1 = new Phaser.Point(game.world.centerX, game.world.centerY);
 //    p2 = new Phaser.Point(p1.x - 50, p1.y - 50);
 //    p3 = new Phaser.Point(p2.x - 50, p2.y - 50);
 //    p4 = new Phaser.Point(p3.x - 50, p3.y - 50);
-    for(var i = 0; i < 150*150; ++i) {
-        aPoint[i].x = i*5;
-        aPoint[i].y = i*5;
+    
+    
+    points = [];
+
+    length = 75;
+    height = 75;
+
+    for (var i = 0; i < height; i++)
+    {
+        for (var j = 0; j < length; j++)
+        {
+            points.push(new Point(i, j));
+    
+        }
     }
 }
 
 function update() {
-
+    for(var i = 0; i < 75*75; ++i) {
+        points[i].r = (points[i].r + 1)%255;
+        points[i].g = (points[i].g + 1)%255;
+        points[i].b = (points[i].b + 1)%255;
+    }
 }
 
 function render() {
-
-    game.context.fillStyle = 'rgb(255, 0, 0)';
-    game.context.fillRect(aPoint[0].x, aPoint[0].y, 5, 5); 
-    
+    for(var i = 0; i < 75*75; i++) {
+        
+        game.context.fillStyle = 'rgb('+points[i].r+', '+points[i].g+', '+points[i].b+')';
+        game.context.fillRect(points[i].x, points[i].y, 10, 10); 
+        
+    }
 
 //    game.context.strokeStyle = 'rgb(0,255,255)';
 //    game.context.beginPath();
