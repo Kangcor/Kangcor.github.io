@@ -5,11 +5,10 @@ $( document ).ready(function() {
 	for(i=0;i<=6666;i++)
 	{
 		var sRow = '<tr>';
-		sRow += "<td id='cell_"+i+"'>"+i+"<span class='glyphicon glyphicon-ok'></span><span class='glyphicon glyphicon-remove'></span>"+"</td>";
-		sRow += "<td><span class='glyphicon glyphicon-remove'></span></td>";
-		sRow += "<td><span class='glyphicon glyphicon-ok'></span></td>";
-		sRow += "<td><span class='glyphicon glyphicon-remove'></span></td>";
-		sRow += '</tr>';
+		sRow += "<td id='cell_"+i+"'>"+i;
+		sRow +="<span class='glyphicon glyphicon-ok'></span>"
+		sRow += "<span class='glyphicon glyphicon-remove'></span>";
+		sRow += '</td></tr>';
 		oTable.append(sRow);
 	}
 
