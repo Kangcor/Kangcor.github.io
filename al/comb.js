@@ -1,5 +1,4 @@
 $( document ).ready(function() {
-	document.getElementById("combinations").innerHTML = "8";
 
 	var oTable = $('#combTable');
 	
